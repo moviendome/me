@@ -1,0 +1,177 @@
+<!doctype html>
+<html class="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Integrate SPL Tokens - Building a Solana Open Source Cross-Platform Wallet App</title>
+    <link href="/stylesheets/site.css" rel="stylesheet" />
+    <script src="/javascripts/site.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+  </head>
+  <body class="bg-gray-900">
+    <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased">
+      <div class="flex justify-between px-4 mx-auto max-w-screen-xl mb-10">
+        <article class="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
+          <header class="mb-4 lg:mb-6 not-format">
+            <address class="flex items-center mb-6 not-italic">
+              <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
+                <a href="/">
+                  <img src="/images/me.webp" class="mr-4 w-16 h-16 rounded-full" alt="Jose Ferrer" />
+                </a>
+                <div>
+                  <span rel="author" class="text-xl font-bold text-gray-900 dark:text-white">Jos&eacute; Ferrer</span>
+                  <p class="text-base text-gray-500 dark:text-gray-400">Ruby/Ruby on Rails Engineer based in Bangkok, Thailand 🇹🇭</p>
+                  <p class="text-base text-gray-500 dark:text-gray-400"><time pubdate datetime="2022-02-08" title="February 8th, 2022">Sep 28, 2021</time></p>
+                </div>
+              </div>
+            </address>
+          </header>
+
+          <h1 class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">Integrate SPL Tokens - Building a Solana Open Source Cross-Platform Wallet App</h1>
+
+          <div class="content-image">
+  <p><img src="/solana-wallet-integrate-spl-tokens/spl-token.png" alt="" /></p>
+</div>
+
+<p>Now that the <a href="https://github.com/jferrer/expo-solana-wallet">Wallet App</a> has implemented the basic operations to:</p>
+
+<ul>
+  <li>Create Accounts</li>
+  <li>Get Balances</li>
+  <li>Receive SOL</li>
+  <li>Send SOL</li>
+  <li>Request an Airdrop</li>
+</ul>
+
+<p>It's the turn of integrate <strong>SPL Tokens</strong>.</p>
+
+<h2 id="what-is-a-spl-token">What is a SPL Token?</h2>
+
+<p>The <strong>Solana Program Library</strong> or <strong>SPL</strong> is the token standard of the <a href="https://spl.solana.com/token">Solana Blockchain</a>, similar to ERC20 on Ethereum.</p>
+
+<p><strong>SPL Tokens</strong> can be traded on <a href="https://projectserum.com/#/">Serum</a>, a <strong>Solana</strong> based decentralized exchange.</p>
+
+<h2 id="token-program">Token Program</h2>
+
+<p>Token Program defines a common implementation for Fungible and Non Fungible Tokens and it's written in Rust language.</p>
+
+<h3 id="create-a-spl-token">Create a SPL Token</h3>
+
+<p>Basically to create a SPL Token we only need to do:</p>
+
+<pre><code class="language-bash">$ spl-token create-token
+</code></pre>
+
+<p>And token is created!</p>
+
+<pre><code class="language-bash">Creating token FyUYPbYiEFjC5LG4oYqdBfiA6PwgC78kbVyWAoYkwMTC
+
+Signature: 3HSD2YwV5vVhqq4kvPQKRqcn52dkZQZreUKzR8AuQLJmiuDvwwPTsG7hdLrhhv7QMe6PS38Mx2i6xM9RgQKRnVh8
+</code></pre>
+
+<p>Later, we should use a few commands more to provide supply, mint or transfer to different accounts.</p>
+
+<p>You can find a complete example at Solana <a href="https://spl.solana.com/token">Token Program</a> page.</p>
+
+<h2 id="integrate-spl-tokens-in-our-wallet-app">Integrate SPL Tokens in our Wallet App</h2>
+
+<p>To be able to interact with this new token on the Wallet App there are a few changes to do:</p>
+
+<p>First, we need to add a new package:</p>
+
+<pre><code class="language-bash">$ yarn add @solana/spl-token
+</code></pre>
+
+<p>If you followed the complete example that I linked before you probably noticed that when transfer a SPL Token to a wallet, an Associated Token account is created:</p>
+
+<pre><code class="language-bash">$ spl-token transfer --fund-recipient FyUYPbYiEFjC5LG4oYqdBfiA6PwgC78kbVyWAoYkwMTC 20 7q6PYSw2dCYfw74igJtDB4iodhCrGBvUg78TnScK6kZj
+
+Transfer 20 tokens
+  Sender: GjmE9KUtCAxBqkX1ssg8wghAazEmh9EZ8y7aRUzFzyHZ
+  Recipient: 7q6PYSw2dCYfw74igJtDB4iodhCrGBvUg78TnScK6kZj
+  Recipient associated token account: 49Yg872M2qMMTPewboNZn5uzjeyLqFVyQ86p3LbC1C1z
+
+Signature: 4GJ78dsa4cq6zSkNJnHknAZFiMc113BHL33pzyVabyQpxd5iCezUNL5J1FAzrDM6mVwZuJANbGVeBNqzcv76ueJG
+</code></pre>
+
+<p>At this moment in our Wallet we only know our Main account so we need to ask for the associated token account before get the Balance.</p>
+
+<pre><code class="language-javascript">import { PublicKey } from '@solana/web3.js';
+import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
+
+const SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID: PublicKey = new PublicKey(
+  'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+);
+
+async function findAssociatedTokenAddress(
+    walletAddress: PublicKey,
+    tokenMintAddress: PublicKey
+): Promise&lt;PublicKey&gt; {
+    return (await PublicKey.findProgramAddress(
+        [
+            walletAddress.toBuffer(),
+            TOKEN_PROGRAM_ID.toBuffer(),
+            tokenMintAddress.toBuffer(),
+        ],
+        SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID
+    ))[0];
+}
+</code></pre>
+
+<p>You can read about here: <a href="https://spl.solana.com/associated-token-account">Associated Token Account Program</a>.</p>
+
+<p>Once, we retrieve the Associated Token Account we can get the balance:</p>
+
+<pre><code class="language-javascript">const getTokenBalance = async (publicKey: string, splToken: string) =&gt; {
+  const connection = createConnection();
+
+  const account = await findAssociatedTokenAddress(
+    publicKeyFromString(publicKey),
+    publicKeyFromString(splToken)
+  );
+
+  const balance = await connection.getTokenAccountBalance(
+    publicKeyFromString(account.toString())
+  );
+
+  return balance.value.amount;
+}
+</code></pre>
+
+<p>Here you can see the <a href="https://github.com/jferrer/expo-solana-wallet/commit/3e4b9d6e7954f1e5d97b469e547b35be3c1ab70f">commit</a> to the repository.</p>
+
+<p>This is a very first and simple implementation that needs some improvements:</p>
+
+<ul>
+  <li>Do some updates to do design of the App</li>
+  <li>Add the possibility to add different tokens</li>
+  <li>Fixes for Mobile. Right now I still have some hardcoded code (in node_modules not pushed yet) to be able to run it on Expo, because some dependencies not included in React Native</li>
+</ul>
+
+        </article>
+      </div>
+      <div class="flex mt-6 sm:justify-center">
+  <a href="https://x.com/moviendo_me" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 24">
+      <path fill-rule="evenodd" d="M13.795 10.533 20.68 2h-3.073l-5.255 6.517L7.69 2H1l7.806 10.91L1.47 22h3.074l5.705-7.07L15.31 22H22l-8.205-11.467Zm-2.38 2.95L9.97 11.464 4.36 3.627h2.31l4.528 6.317 1.443 2.02 6.018 8.409h-2.31l-4.934-6.89Z"/>
+    </svg>
+    <span class="sr-only">Twitter page</span>
+  </a>
+  <a href="https://github.com/moviendome" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd" d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z" clip-rule="evenodd"></path>
+    </svg>
+    <span class="sr-only">GitHub account</span>
+  </a>
+  <a href="https://www.instagram.com/moviendome/" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+    </svg>
+    <span class="sr-only">Instagram account</span>
+  </a>
+</div>
+
+    </main>
+  </body>
+</html>

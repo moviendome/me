@@ -1,0 +1,205 @@
+<!doctype html>
+<html class="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>ES6 for React Developers</title>
+    <link href="/stylesheets/site.css" rel="stylesheet" />
+    <script src="/javascripts/site.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+  </head>
+  <body class="bg-gray-900">
+    <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased">
+      <div class="flex justify-between px-4 mx-auto max-w-screen-xl mb-10">
+        <article class="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
+          <header class="mb-4 lg:mb-6 not-format">
+            <address class="flex items-center mb-6 not-italic">
+              <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
+                <a href="/">
+                  <img src="/images/me.webp" class="mr-4 w-16 h-16 rounded-full" alt="Jose Ferrer" />
+                </a>
+                <div>
+                  <span rel="author" class="text-xl font-bold text-gray-900 dark:text-white">Jos&eacute; Ferrer</span>
+                  <p class="text-base text-gray-500 dark:text-gray-400">Ruby/Ruby on Rails Engineer based in Bangkok, Thailand 🇹🇭</p>
+                  <p class="text-base text-gray-500 dark:text-gray-400"><time pubdate datetime="2022-02-08" title="February 8th, 2022">Feb 2, 2021</time></p>
+                </div>
+              </div>
+            </address>
+          </header>
+
+          <h1 class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">ES6 for React Developers</h1>
+
+          <p>When I started my travel with <a href="/create-cross-platform-apps-with-react-native-and-expo.html">React Native</a> I noticed that my skills in <strong>Javascript</strong> were totally obsoleted. As <strong>Full-Stack Ruby on Rails developer</strong>, the <strong>Javascript</strong> that I've been doing for years was very basic and focused in the use of <em>jQuery</em> mainly for the Frontend and some <em>CoffeeScript</em>. So understanding the modern JS was crucial to can be proficient writing and understanding <a href="https://reactjs.org/">React</a>.</p>
+
+<p>First, looking at <strong>ES6</strong> I could see that it's a big change with respect to the <em>"old JS"</em> bringing a lot of new features that make <strong>JavaScript</strong> an amazing language much more expressive and readable.</p>
+
+<p>These are the <strong>ES6</strong> features that every <a href="https://reactjs.org/">React</a> developer must know:</p>
+
+<h2 id="better-variable-declaration">Better variable declaration</h2>
+
+<p>No more <code>var</code> to declare variables avoiding issues with global scopes.</p>
+
+<p>Use:</p>
+
+<ul>
+  <li>
+    <p><code>const</code> when you are not going to update its value.</p>
+  </li>
+  <li>
+    <p><code>let</code> when you want to update its value.</p>
+  </li>
+</ul>
+
+<p>Also, <code>const</code> and <code>let</code> only can be declared once in the same scope and they are block scoped.</p>
+
+<p>To fast check, go to JS Console and try to update a variable declared with <code>const</code>:</p>
+
+<pre><code class="language-javascript">const something = 'cool';
+something = 'Nop';
+
+=&gt; Uncaught TypeError: Assignment to constant variable.
+</code></pre>
+
+<h2 id="string-literals">String literals</h2>
+
+<p>Present in other languages it allows us interpolation in strings:</p>
+
+<pre><code class="language-javascript">// Old
+const language = 'Javascript';
+language + ' is great';
+
+// New
+`${language} is great`;
+</code></pre>
+
+<p>Other advantages:</p>
+
+<ul>
+  <li>Avoid escape when special characters</li>
+  <li>New lines are preserved</li>
+</ul>
+
+<pre><code class="language-javascript">const multiline = `
+This is a multiline message
+
+Thanks to the new feature String Literals
+
+Happy coding,
+${language}
+`;
+</code></pre>
+
+<h2 id="arrow-functions">Arrow functions</h2>
+
+<p>Very similar to <em>CoffeeScript</em> this new syntax brings several benefits:</p>
+
+<ul>
+  <li>More consise, no more <code>function</code> keyword</li>
+  <li>Implicit <code>return</code></li>
+  <li>Automatic binding to context, so no more <code>this</code></li>
+</ul>
+
+<pre><code class="language-javascript">
+const multiply = function(a, b) {
+  return a * b
+}
+
+// same
+const multiply = (a, b) =&gt; a * b;
+</code></pre>
+
+<h2 id="deconstructing">Deconstructing</h2>
+
+<p>It allows us to extract variables from arrays and objects with a simpler syntax:</p>
+
+<pre><code class="language-javascript">const languages = ['Javascript', 'Ruby', 'Golang'];
+const [one, two, three] = languages;
+
+const user = {
+  name: 'John',
+  lastName: 'Doe',
+  contact: {
+    email: 'john@doe.com'
+  }
+}
+
+const { name, lastName, contact: { email } } = user;
+</code></pre>
+
+<p>You will see this case a lot at the top of React Components to extract values from <code>props</code>:</p>
+
+<pre><code class="language-javascript">const { title, subtitle } = props;
+</code></pre>
+
+<h2 id="rest--spead-operator">Rest &amp; Spead operator</h2>
+
+<p>It allows us to expand elements:</p>
+
+<pre><code class="language-javascript">const languages = ['Javascript', 'Ruby', 'Golang'];
+const newArr = ['Rust', ...languages];
+</code></pre>
+
+<p>Also, commonly used to modify a Redux store:</p>
+
+<pre><code class="language-javascript">state.items.map(expense =&gt;
+  expense.id === payload.id
+    ? {
+      ...expense,
+      title: payload.title,
+      amount: payload.amount,
+      }
+    : expense
+)
+</code></pre>
+
+<h2 id="shorthand-syntax">Shorthand syntax</h2>
+
+<p>It makes objects more concise.</p>
+
+<pre><code class="language-javascript">const user = (name, email) =&gt; {
+  return {
+    name: name,
+    email: email,
+    timestamp: Date.now()
+  }
+}
+
+// same with shorthand
+const user = (name, email) =&gt; {
+  return {
+    name,
+    email,
+    timestamp: Date.now()
+  }
+}
+</code></pre>
+
+<p>These are only a few of the new features included in ES6 but IMO the most relevant to work with React.</p>
+
+        </article>
+      </div>
+      <div class="flex mt-6 sm:justify-center">
+  <a href="https://x.com/moviendo_me" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 24">
+      <path fill-rule="evenodd" d="M13.795 10.533 20.68 2h-3.073l-5.255 6.517L7.69 2H1l7.806 10.91L1.47 22h3.074l5.705-7.07L15.31 22H22l-8.205-11.467Zm-2.38 2.95L9.97 11.464 4.36 3.627h2.31l4.528 6.317 1.443 2.02 6.018 8.409h-2.31l-4.934-6.89Z"/>
+    </svg>
+    <span class="sr-only">Twitter page</span>
+  </a>
+  <a href="https://github.com/moviendome" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd" d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z" clip-rule="evenodd"></path>
+    </svg>
+    <span class="sr-only">GitHub account</span>
+  </a>
+  <a href="https://www.instagram.com/moviendome/" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+    </svg>
+    <span class="sr-only">Instagram account</span>
+  </a>
+</div>
+
+    </main>
+  </body>
+</html>

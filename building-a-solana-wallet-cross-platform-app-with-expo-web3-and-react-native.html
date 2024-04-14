@@ -1,0 +1,325 @@
+<!doctype html>
+<html class="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Building a Solana Wallet Cross-Platform App with Expo, Web3 & React Native</title>
+    <link href="/stylesheets/site.css" rel="stylesheet" />
+    <script src="/javascripts/site.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+  </head>
+  <body class="bg-gray-900">
+    <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased">
+      <div class="flex justify-between px-4 mx-auto max-w-screen-xl mb-10">
+        <article class="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
+          <header class="mb-4 lg:mb-6 not-format">
+            <address class="flex items-center mb-6 not-italic">
+              <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
+                <a href="/">
+                  <img src="/images/me.webp" class="mr-4 w-16 h-16 rounded-full" alt="Jose Ferrer" />
+                </a>
+                <div>
+                  <span rel="author" class="text-xl font-bold text-gray-900 dark:text-white">Jos&eacute; Ferrer</span>
+                  <p class="text-base text-gray-500 dark:text-gray-400">Ruby/Ruby on Rails Engineer based in Bangkok, Thailand 🇹🇭</p>
+                  <p class="text-base text-gray-500 dark:text-gray-400"><time pubdate datetime="2022-02-08" title="February 8th, 2022">Sep 15, 2021</time></p>
+                </div>
+              </div>
+            </address>
+          </header>
+
+          <h1 class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">Building a Solana Wallet Cross-Platform App with Expo, Web3 & React Native</h1>
+
+          <div class="content-image">
+  <p><img src="/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/solana-wallet-app.jpg" alt="" /></p>
+</div>
+
+<p>As a developer I've been interested in the Blockchain space for long time and although a few years ago I started to learn Solidity for fun I didn't build something real.</p>
+
+<p>Few weeks ago, having a coffee in one of my favorite places here in the island I started to read about <a href="https://solana.com/">Solana</a> and I found some easy Node scripts to do the basic operations with Web3 so I did one of the most dangerous things you can do :D</p>
+
+<pre><code class="language-bash">$ expo init solana-wallet
+</code></pre>
+
+<p>I thought that build a basic Wallet App could be a good introduction to <strong>Solana and Web3</strong> and let me practice more with Expo and React Native.</p>
+
+<p>So I spent the rest of the weekend and some time more the next week <strong>building a fully functional Cross-Platform Solana Wallet App</strong>.</p>
+
+<h2 id="screens-and-features">Screens and Features</h2>
+
+<p>The App is really simple. For now, it has these:</p>
+
+<h3 id="welcome">Welcome</h3>
+
+<p>This screen only shows a button to start!</p>
+
+<div class="content-image">
+  <p><img src="/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/welcome.png" alt="" /></p>
+</div>
+
+<h3 id="create-your-passcode">Create your passcode</h3>
+
+<p>This screen let you create a passcode that for now is only requested when you want to see your recovery phrase.</p>
+
+<p>Later, it can be used to encrypt the seed, before doing a transfer or even to access to the full app.</p>
+
+<div class="content-image">
+  <p><img src="/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/passcode.png" alt="" /></p>
+</div>
+
+<h3 id="dashboard">Dashboard</h3>
+
+<p>This screen shows the account balance and soon it will show the Activity of the account.</p>
+
+<p>Also, it is where I placed the Navigation using a floating action button (component provided by <a href="https://callstack.github.io/react-native-paper/fab-group.html">React Native Paper</a>)</p>
+
+<div class="content-image">
+  <p><img src="/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/dashboard.png" alt="" /></p>
+</div>
+
+<p>Get account balance with web3:</p>
+
+<pre><code class="language-javascript">const getBalance = async (publicKey) =&gt; {
+  const connection = createConnection();
+  const _publicKey = publicKeyFromString(publicKey);
+
+  const lamports = await connection.getBalance(_publicKey).catch((err) =&gt; {
+    console.error(`Error: ${err}`);
+  });
+
+  const sol = lamports / LAMPORTS_PER_SOL;
+  return sol;
+};
+</code></pre>
+
+<h3 id="receive">Receive</h3>
+
+<p>This screen shows the address and a qr to make easier receive tokens.</p>
+
+<div class="content-image">
+  <p><img src="/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/receive.png" alt="" /></p>
+</div>
+
+<h3 id="send">Send</h3>
+
+<p>This screen allows you to send tokens to other accounts typing the address or scanning a qr code.</p>
+
+<p>Also, this screen shows the current price of SOL, SOL available in the account and convert the introduced amount to USD.</p>
+
+<p>Validations are pending!</p>
+
+<div class="content-image">
+  <p><img src="/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/send.png" alt="" /></p>
+</div>
+
+<p>Create transaction with web3:</p>
+
+<pre><code class="language-javascript">const transaction = async (from, to, amount) =&gt; {
+  const account = accountFromSeed(from.seed);
+
+  console.log("Executing transaction...");
+  console.log(amount);
+
+  const transaction = new solanaWeb3.Transaction().add(
+    solanaWeb3.SystemProgram.transfer({
+      fromPubkey: publicKeyFromString(from.account),
+      toPubkey: publicKeyFromString(to),
+      lamports: amount * LAMPORTS_PER_SOL,
+    })
+  );
+
+  // Sign transaction, broadcast, and confirm
+  const connection = createConnection();
+  const signature = await solanaWeb3.sendAndConfirmTransaction(
+    connection,
+    transaction,
+    [account]
+  );
+  console.log("SIGNATURE", signature);
+};
+
+</code></pre>
+
+<p>Get Solana price using <a href="https://www.coingecko.com">Coingecko</a> API:</p>
+
+<pre><code class="language-javascript">const getSolanaPrice = async () =&gt; {
+  const response = await fetch(
+    `https://api.coingecko.com/api/v3/simple/price?ids=solana&amp;vs_currencies=usd`,
+    {
+      method: "GET",
+    }
+  );
+
+  const data = await response.json();
+  return data.solana.usd;
+};
+
+</code></pre>
+
+<h3 id="settings">Settings</h3>
+
+<p>This screen shows two options:</p>
+
+<div class="content-image">
+  <p><img src="/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/settings.png" alt="" /></p>
+</div>
+
+<h4 id="backup">Backup</h4>
+
+<p>To access to recovery phrase. Before ask for passcode.</p>
+
+<h4 id="request-airdrop">Request Airdrop</h4>
+
+<p>This app is configured to connect to dev network so the tokens showed are not real.</p>
+
+<p>Good thing is that every time you press here you get 1 SOL in your account that can be used to test the app, make transfers…</p>
+
+<p>Request an Airdrop in dev mode with web3:</p>
+
+<pre><code class="language-javascript">const requestAirDrop = async (publicKeyString: string) =&gt; {
+  const connection = createConnection();
+
+  const airdropSignature = await connection.requestAirdrop(
+    publicKeyFromString(publicKeyString),
+    LAMPORTS_PER_SOL
+  );
+
+  const signature = await connection.confirmTransaction(airdropSignature);
+  return signature;
+};
+</code></pre>
+
+<h2 id="what-i-used-to-build-this-solana-wallet">What I used to build this Solana Wallet</h2>
+
+<h3 id="expo">Expo</h3>
+<p>Expo is an open-source platform for making universal native apps for Android, iOS, and the web with JavaScript and React.
+ - <a href="https://expo.io/">Expo</a></p>
+
+<h3 id="solanaweb3js">Solana/web3.js</h3>
+<p>This is the Solana Javascript API built on the Solana JSON RPC API.
+ - <a href="https://solana-labs.github.io/solana-web3.js/">Solana/web3.js</a></p>
+
+<h3 id="easy-peasy">Easy Peasy</h3>
+<p>Vegetarian friendly state for React.
+ - <a href="https://easy-peasy.vercel.app/">Easy Peasy</a></p>
+
+<h3 id="react-native-paper">React Native Paper</h3>
+<p>Paper is a collection of customizable and production-ready components for React Native, following Google’s Material Design guidelines.
+ - <a href="https://callstack.github.io/react-native-paper/">React Native Paper</a></p>
+
+<h3 id="react-navigation">React Navigation</h3>
+<p>Routing and navigation for Expo and React Native apps.
+ - <a href="https://reactnavigation.org/">React Navigation</a></p>
+
+<h3 id="more">More</h3>
+
+<p>Moreover I used other libraries for crypto, qr generate and scan…</p>
+
+<p>You can check them in <a href="https://github.com/jferrer/expo-solana-wallet/blob/main/package.json">package.json</a></p>
+
+<h2 id="problems-that-i-found-and-workarounds-to-solve-them">Problems that I found and workarounds to solve them</h2>
+
+<h3 id="crypto-dependency">Crypto dependency</h3>
+
+<p><code>solana/web3.js</code> needs <code>Crypto</code> that it seems that now it's included in NodeJS but no in React Native and although I found some ways to have it working in React Native I didn't find a way to do it without ejecting the app from Expo.</p>
+
+<p>Finally I found a workaround that basically uses <code>ethers.js</code> and <code>expo-random</code> to be able to generate mnemonic and seed. Later, I was able to use <code>solana/web3.js</code> without issues to connect to the network, get balance, transfer…</p>
+
+<pre><code class="language-javascript">const generateMnemonic = async () =&gt; {
+  const randomBytes = await Random.getRandomBytesAsync(32);
+  const mnemonic = ethers.utils.entropyToMnemonic(randomBytes);
+  return mnemonic;
+};
+
+const mnemonicToSeed = async (mnemonic: string) =&gt; {
+   const bip39 = await import("bip39");
+   const seed = await bip39.mnemonicToSeed(mnemonic);
+   return Buffer.from(seed).toString("hex");
+};
+
+const accountFromSeed = (seed: string) =&gt; {
+  const hex = Uint8Array.from(Buffer.from(seed));
+  const keyPair = nacl.sign.keyPair.fromSeed(hex.slice(0, 32));
+  const account = new solanaWeb3.Account(keyPair.secretKey);
+  return account;
+};
+</code></pre>
+
+<h3 id="metro-has-encountered-an-error-trying-to-resolve-module-superstruct">Metro has encountered an error trying to resolve module 'superstruct'</h3>
+
+<p>Here the problem seems to be that the package entrypoint is a CommmonJS file. To solve it I added <code>.cjs</code> files to <code>metro.config.js</code></p>
+
+<pre><code class="language-javascript">module.exports = {
+  resolver: {
+    sourceExts: ["jsx", "js", "ts", "tsx", "cjs"],
+  },
+};
+</code></pre>
+
+<h3 id="some-rn-url-methods-have-no-implementation">Some RN URL methods have no implementation</h3>
+
+<p>React Native <code>react-native/Libraries/Blob/URL.js</code> has no implementation for some methods.</p>
+
+<p>Before, I was changing the 2 methods (<code>protocol</code> and <code>port</code>) manually but every time that I run <code>yarn</code> back to normal.</p>
+
+<p>After a bit of research it seems that RN doesn't include this because the full implementation will increase a lot the size of the bundle but can be solved adding <code>react-native-url-polyfill</code> package.</p>
+
+<pre><code class="language-bash">$ yarn add react-native-url-polyfill
+</code></pre>
+
+<pre><code class="language-javascript"># App.tsx
+...
+import "react-native-url-polyfill/auto";
+...
+</code></pre>
+
+<h2 id="whats-next">What's next</h2>
+
+<ul>
+  <li>Continue cleaning the code and remove packages that I'm not using anymore.</li>
+  <li>Design doesn't adjust well. I used a <a href="https://www.freepik.com/free-vector/retro-futuristic-landscape-background-with-sun_5072269.htm#page=1&amp;query=sun%20future&amp;position=12">Background</a> only to see it nice when I was building.</li>
+  <li>Give option to connect to Mainnet.</li>
+  <li>Let the option to generate derived accounts, encrypt seed phrase…</li>
+  <li>Integration with <a href="https://projectserum.com/#/">Serum</a> for Swaps.</li>
+  <li>Run as Browser Extension.</li>
+</ul>
+
+<h2 id="final">Final</h2>
+<p>My goal with this was to learn the Web3 basics building something simple and sharing 100% of the code between Web and Native.</p>
+
+<p>I think it has been a good introduction to see how Web3 works.</p>
+
+<p>If you think that it can be useful for you I published the repo <a href="https://github.com/jferrer/expo-solana-wallet">here</a>.</p>
+
+<pre><code class="language-bash">$ git clone https://github.com/jferrer/expo-solana-wallet.git
+$ cd expo-solana-wallet
+$ yarn install
+$ expo web or expo start
+</code></pre>
+
+        </article>
+      </div>
+      <div class="flex mt-6 sm:justify-center">
+  <a href="https://x.com/moviendo_me" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 24">
+      <path fill-rule="evenodd" d="M13.795 10.533 20.68 2h-3.073l-5.255 6.517L7.69 2H1l7.806 10.91L1.47 22h3.074l5.705-7.07L15.31 22H22l-8.205-11.467Zm-2.38 2.95L9.97 11.464 4.36 3.627h2.31l4.528 6.317 1.443 2.02 6.018 8.409h-2.31l-4.934-6.89Z"/>
+    </svg>
+    <span class="sr-only">Twitter page</span>
+  </a>
+  <a href="https://github.com/moviendome" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd" d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z" clip-rule="evenodd"></path>
+    </svg>
+    <span class="sr-only">GitHub account</span>
+  </a>
+  <a href="https://www.instagram.com/moviendome/" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+    </svg>
+    <span class="sr-only">Instagram account</span>
+  </a>
+</div>
+
+    </main>
+  </body>
+</html>
