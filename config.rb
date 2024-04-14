@@ -7,9 +7,9 @@ end
 
 activate :external_pipeline,
   name: :tailwind,
-  command: "npx tailwindcss -i ./source/stylesheets/site.css -o ./dist/stylesheets/site.css #{"--watch" unless build?}",
+  command: "npx tailwindcss -i ./source/stylesheets/site.css -o ./build/stylesheets/site.css #{"--watch" unless build?}",
   latency: 2,
-  source: "./dist/"
+  source: "./build/"
 
 # Layouts
 # https://middlemanapp.com/basics/layouts/
