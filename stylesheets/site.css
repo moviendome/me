@@ -2426,6 +2426,10 @@ input:checked + .toggle-bg {
   gap: 3rem;
 }
 
+.gap-4 {
+  gap: 1rem;
+}
+
 .gap-8 {
   gap: 2rem;
 }
@@ -2634,6 +2638,10 @@ input:checked + .toggle-bg {
   padding: 0.25rem;
 }
 
+.p-10 {
+  padding: 2.5rem;
+}
+
 .p-2 {
   padding: 0.5rem;
 }
@@ -2726,6 +2734,10 @@ input:checked + .toggle-bg {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.pb-0 {
+  padding-bottom: 0px;
 }
 
 .pb-10 {
