@@ -15,7 +15,7 @@ address_url: https://goo.gl/maps/qVaKLanTRPiRNRxy8
 </div>
 
 <div class="notification">
-  <p class="content is-small has-text-centered">
+  <p class="text-sm text-center">
     <a class="subtitle is-6" href="https://goo.gl/maps/qVaKLanTRPiRNRxy8" target="_blank">
       Chao Phraya River, Bangkok, Thailand
     </a>

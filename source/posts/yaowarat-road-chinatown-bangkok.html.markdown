@@ -15,7 +15,7 @@ address_url: https://goo.gl/maps/V5RcxEkr3kJkFeoj8
 </div>
 
 <div class="notification">
-  <p class="content is-small has-text-centered">
+  <p class="text-sm text-center">
     <a class="subtitle is-6" href="https://goo.gl/maps/V5RcxEkr3kJkFeoj8" target="_blank">
       Yaowarat Rd, Samphanthawong, Bangkok 10100 , Thailand
     </a>

@@ -7,7 +7,9 @@ end
 
 activate :external_pipeline,
   name: :tailwind,
-  command: "npx tailwindcss -i ./source/stylesheets/site.css -o ./build/stylesheets/site.css #{"--watch" unless build?}",
+  command: "npx tailwindcss -i ./source/stylesheets/site.css -o ./build/stylesheets/site.css #{unless build?
+                                                                                                 "--watch"
+                                                                                               end}",
   latency: 2,
   source: "./build/"
 
@@ -15,18 +17,18 @@ activate :external_pipeline,
 # https://middlemanapp.com/basics/layouts/
 
 # Per-page layout changes
-page '/*.xml', layout: false
-page '/*.json', layout: false
-page '/*.txt', layout: false
+page "/*.xml", layout: false
+page "/*.json", layout: false
+page "/*.txt", layout: false
 
 activate :blog do |blog|
-  blog.layout = 'post'
-  blog.sources = 'posts/{title}.html'
-  blog.permalink = '{title}.html'
+  blog.layout = "post"
+  blog.sources = "posts/{title}.html"
+  blog.permalink = "{title}.html"
   blog.summary_separator = /SPLIT_SUMMARY_BEFORE_THIS/
   blog.paginate = true
-  blog.page_link = 'page/{num}'
-  # blog.per_page = 2
+  blog.page_link = "page/{num}"
+  blog.per_page = 10
 end
 
 # With alternative layout
