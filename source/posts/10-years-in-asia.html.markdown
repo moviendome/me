@@ -1,9 +1,10 @@
 ---
 
 title: 10 Years in Asia
+description: A decade ago, if someone had told me I'd spend the next ten years of my life exploring and living across Asia, I probably wouldn't have believed them. Yet here I am, looking back at a journey that transformed not just my career, but my entire perspective on life and work.
 date: 2024-12-07 00:01 UTC
 tags: personal
-ig: 
+cover: 10-years-in-asia/lumpini-park-bangkok-thailand.webp
 
 ---
 

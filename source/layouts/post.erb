@@ -12,7 +12,13 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><%= current_page.data.title || "Middleman" %></title>
+    <title><%= current_page.data.title || "moviendo.me" %></title>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://moviendo.me<%= current_page.url %>">
+    <meta name="twitter:title" content="<%= current_page.data.title %>">
+    <meta name="twitter:description" content="<%= current_page.data.description %>">
+    <meta name="twitter:image" content="https://moviendo.me/<%= current_page.data.cover %>">
+    <meta name="twitter:creator" content="@moviendo_me">
     <%= stylesheet_link_tag "site" %>
     <%= javascript_include_tag "site" %>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
