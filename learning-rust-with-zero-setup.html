@@ -1,0 +1,181 @@
+<!doctype html>
+<html class="dark">
+  <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WBB2EGM7ZT"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-WBB2EGM7ZT');
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>A Zero Setup Docker-based Development Environment for Learning Rust with Rustlings</title>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://moviendo.me/learning-rust-with-zero-setup.html">
+    <meta name="twitter:title" content="A Zero Setup Docker-based Development Environment for Learning Rust with Rustlings">
+    <meta name="twitter:description" content="Learn Rust programming efficiently with a zero-setup Docker environment featuring Rustlings exercises, LazyVim, and GitHub Copilot. Start coding in minutes with this ready-to-use development container.">
+    <meta name="twitter:image" content="https://moviendo.me/10-years-in-asia/lumpini-park-bangkok-thailand.webp">
+    <meta name="twitter:creator" content="@moviendo_me">
+    <link href="/stylesheets/site.css" rel="stylesheet" />
+    <script src="/javascripts/site.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+  </head>
+  <body class="bg-gray-900">
+    <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased">
+      <div class="flex justify-between px-4 mx-auto max-w-screen-xl mb-10">
+        <article class="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
+          <header class="mb-4 lg:mb-6 not-format">
+            <address class="flex items-center mb-6 not-italic">
+              <div class="inline-flex items-center text-sm text-gray-900 dark:text-white">
+                <a href="/">
+                  <img src="/images/me-2.webp" class="w-24 sm:w-16 h-16 rounded-full" alt="Jose Ferrer" />
+                </a>
+                <div class="pl-6">
+                  <span rel="author" class="text-xl font-bold text-gray-900 dark:text-white">Jos&eacute; Ferrer</span>
+                  <p class="text-base text-gray-500 dark:text-gray-400">Ruby/Ruby on Rails Engineer based in Bangkok, Thailand 🇹🇭</p>
+                  <p class="text-base text-gray-500 dark:text-gray-400"><time pubdate datetime="Jan 5, 2025" title="Jan 5, 2025">Jan 5, 2025</time></p>
+                </div>
+              </div>
+            </address>
+          </header>
+
+          <h1 class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">A Zero Setup Docker-based Development Environment for Learning Rust with Rustlings</h1>
+
+          <p>Learning a new programming language often comes with an unexpected challenge: setting up the development environment. Before you can even write your first line of code, you need to install compilers, configure an IDE, set up debugging tools, and more. This setup process can be particularly daunting for beginners and can sometimes lead to frustration before the actual learning begins.</p>
+
+<p>That's why I created a Docker-based Rust learning environment that takes care of all the setup complexities. This project provides a ready-to-use development environment for working through Rustlings exercises, complete with a modern editor setup and AI assistance.</p>
+
+<p><img src="/learning-rust-with-zero-setup/rustlings.png" alt="Rustlings Docker Development Environment" /></p>
+
+<h2 id="why-rust">Why Rust?</h2>
+
+<p>Rust has been Stack Overflow's most loved programming language for seven consecutive years, and for good reason. It offers memory safety without garbage collection, fearless concurrency, and zero-cost abstractions. These features make it an excellent choice for systems programming, WebAssembly development, and building high-performance applications.</p>
+
+<p>However, Rust's learning curve can be steep. The language introduces unique concepts like ownership and borrowing, which can take time to master. That's where Rustlings comes in – it's an excellent project that provides small exercises to get you used to reading and writing Rust code.</p>
+
+<h2 id="the-problem-with-traditional-setup">The Problem with Traditional Setup</h2>
+
+<p>Setting up a Rust development environment traditionally involves:</p>
+
+<ol>
+  <li>Installing Rust and Cargo</li>
+  <li>Setting up an IDE with proper extensions</li>
+  <li>Installing Rustlings</li>
+  <li>Configuring code completion and analysis tools</li>
+  <li>Setting up debugging tools</li>
+</ol>
+
+<p>This process can vary across different operating systems and can sometimes lead to compatibility issues. Additionally, if you want to learn Rust on different machines, you'll need to repeat this setup process each time.</p>
+
+<h2 id="enter-containerized-rust-learning-environment">Enter: Containerized Rust Learning Environment</h2>
+
+<p>My solution packages everything you need into a Docker container. With just two commands:</p>
+
+<p><code>bash
+make build
+make run
+</code></p>
+
+<p>You get a fully configured development environment that includes:</p>
+
+<ul>
+  <li>A complete Rust toolchain</li>
+  <li>Rustlings exercises</li>
+  <li>LazyVim editor with Rust-specific configurations</li>
+  <li>GitHub Copilot and Copilot Chat for AI assistance</li>
+  <li>A split-screen terminal setup using Tmux</li>
+</ul>
+
+<p>The environment is designed to be reproducible and consistent across different machines. Whether you're on Windows, macOS, or Linux, as long as you have Docker installed, you'll get the same development experience.</p>
+
+<h2 id="the-power-of-ai-assisted-learning">The Power of AI-Assisted Learning</h2>
+
+<p>One unique aspect of this setup is the integration of GitHub Copilot and Copilot Chat. When learning a new language, having an AI assistant can be incredibly helpful:</p>
+
+<ul>
+  <li>Get real-time suggestions as you write code</li>
+  <li>Ask questions about Rust concepts</li>
+  <li>Receive explanations of error messages</li>
+  <li>Get help with implementing solutions</li>
+</ul>
+
+<p>While AI shouldn't replace understanding the core concepts, it can significantly accelerate the learning process by providing immediate feedback and suggestions.</p>
+
+<h2 id="the-development-experience">The Development Experience</h2>
+
+<p>When you start the environment, you're presented with a split-screen interface:</p>
+
+<ul>
+  <li>On the left: LazyVim editor with full Rust support</li>
+  <li>On the right: Rustlings exercises</li>
+</ul>
+
+<p>The editor comes pre-configured with:
+- Rust-analyzer for intelligent code completion
+- Syntax highlighting
+- Error diagnostics
+- Code formatting
+- Git integration</p>
+
+<p>The Tmux-based terminal setup allows you to easily switch between panes and manage your workspace efficiently.</p>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<p>If you want to try it out, the project is available on GitHub: <a href="https://github.com/moviendome/rustlings-env">https://github.com/moviendome/rustlings-env</a></p>
+
+<p>The setup process is straightforward:
+1. Ensure you have Docker installed
+2. Clone the repository
+3. Run <code>make build</code> to create the container
+4. Run <code>make run</code> to start the environment</p>
+
+<h2 id="whats-next">What's Next?</h2>
+
+<p>This is just the beginning. I plan to add more features to enhance the learning experience:
+- Integration with Rust by Example exercises
+- Additional debugging tools
+- More customization options
+- Support for different editor configurations</p>
+
+<h2 id="contributing">Contributing</h2>
+
+<p>The project is open source, and contributions are welcome! Whether it's adding new features, improving documentation, or fixing bugs, every contribution helps make learning Rust more accessible for everyone.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Learning a new programming language should be about understanding concepts and writing code, not fighting with tool installation and configuration. By containerizing the development environment, we can remove these barriers and focus on what matters: learning Rust.</p>
+
+<p>If you're interested in learning Rust, give this environment a try. I'd love to hear your feedback and suggestions for improvement.</p>
+
+<p>Happy coding! 🦀</p>
+
+        </article>
+      </div>
+      <div class="flex mt-6 mb-10 justify-center">
+  <a href="https://x.com/moviendo_me" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">
+    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 24">
+      <path fill-rule="evenodd" d="M13.795 10.533 20.68 2h-3.073l-5.255 6.517L7.69 2H1l7.806 10.91L1.47 22h3.074l5.705-7.07L15.31 22H22l-8.205-11.467Zm-2.38 2.95L9.97 11.464 4.36 3.627h2.31l4.528 6.317 1.443 2.02 6.018 8.409h-2.31l-4.934-6.89Z"/>
+    </svg>
+    <span class="sr-only">Twitter page</span>
+  </a>
+  <a href="https://github.com/moviendome" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd" d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z" clip-rule="evenodd"></path>
+    </svg>
+    <span class="sr-only">GitHub account</span>
+  </a>
+  <a href="https://www.instagram.com/moviendome/" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+    </svg>
+    <span class="sr-only">Instagram account</span>
+  </a>
+</div>
+
+
+    </main>
+  </body>
+</html>
