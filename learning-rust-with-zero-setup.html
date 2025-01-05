@@ -70,14 +70,19 @@
 
 <p>This process can vary across different operating systems and can sometimes lead to compatibility issues. Additionally, if you want to learn Rust on different machines, you'll need to repeat this setup process each time.</p>
 
-<h2 id="enter-containerized-rust-learning-environment">Enter: Containerized Rust Learning Environment</h2>
+<h2 id="containerized-rust-learning-environment">Containerized Rust Learning Environment</h2>
 
-<p>My solution packages everything you need into a Docker container. With just two commands:</p>
+<p>It packages everything you need into a Docker container. With just two commands:</p>
 
-<p><code>bash
-make build
-make run
-</code></p>
+<p>Build the Docker image:
+   <code>bash
+   make build
+  </code></p>
+
+<p>Start the environment:
+   <code>bash
+   make run
+  </code></p>
 
 <p>You get a fully configured development environment that includes:</p>
 
@@ -113,12 +118,15 @@ make run
   <li>On the right: Rustlings exercises</li>
 </ul>
 
-<p>The editor comes pre-configured with:
-- Rust-analyzer for intelligent code completion
-- Syntax highlighting
-- Error diagnostics
-- Code formatting
-- Git integration</p>
+<p>The editor comes pre-configured with:</p>
+
+<ul>
+  <li>Rust-analyzer for intelligent code completion</li>
+  <li>Syntax highlighting</li>
+  <li>Error diagnostics</li>
+  <li>Code formatting</li>
+  <li>Git integration</li>
+</ul>
 
 <p>The Tmux-based terminal setup allows you to easily switch between panes and manage your workspace efficiently.</p>
 
@@ -127,10 +135,10 @@ make run
 <p>If you want to try it out, the project is available on GitHub: <a href="https://github.com/moviendome/rustlings-env">https://github.com/moviendome/rustlings-env</a></p>
 
 <p>The setup process is straightforward:
-1. Ensure you have Docker installed
-2. Clone the repository
-3. Run <code>make build</code> to create the container
-4. Run <code>make run</code> to start the environment</p>
+- Ensure you have Docker installed
+- Clone the repository
+- Run <code>make build</code> to create the container
+- Run <code>make run</code> to start the environment</p>
 
 <h2 id="whats-next">What's Next?</h2>
 
